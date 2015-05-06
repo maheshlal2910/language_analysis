@@ -1,6 +1,4 @@
 from nltk.corpus import stopwords
-from bs4 import BeautifulSoup
-from functools import reduce
 import re
 
 from language_analysis.core.clean.custom_stemmer import stemmer
