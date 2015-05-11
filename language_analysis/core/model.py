@@ -15,7 +15,7 @@ class Document:
     def __init__(self, _id, _text, processed_text= "", term_frequencies = {}):
         self._id = _id
         self._text = _text
-        self._processed_text = _text
+        self._processed_text = processed_text
         self._term_frequencies = term_frequencies
 
     def compose(self, term_frequencies):
@@ -30,7 +30,7 @@ class Document:
         return self._processed_text
 
     def word_list(self):
-        return self._text.split()
+        return self._processed_text.split()
 
     def clean_using(self, cleaner):
         self._processed_text = cleaner(self._text)

@@ -29,6 +29,7 @@ punctuation_cleaner = PunctuationCleaner()
 stopword_cleaner = StopwordCleaner()
 
 def clean(doc):
-    cleaned_doc = stopword_cleaner.clean(punctuation_cleaner.clean(doc.lower()))
-    stemmed_doc = " ".join([stemmer.stem(word) for word in cleaned_doc.split()])
+    punctuation_cleaned = punctuation_cleaner.clean(doc.lower())
+    cleaned_doc = stopword_cleaner.clean(punctuation_cleaned)
+    stemmed_doc = " ".join([stemmer.stem(word).lower() for word in cleaned_doc.split()])
     return stemmed_doc

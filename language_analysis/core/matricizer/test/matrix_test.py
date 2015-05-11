@@ -9,7 +9,8 @@ class WordFrequencyTest(unittest.TestCase):
         self.freq_mat = WordFrequency()
 
     def test_should_create_frequency_matrix_for_doc(self):
-        self.freq_mat.formulate_word_freq_list(Document(123, "this is a stupid doc with some stupid text and no meaning to text"))
+        self.freq_mat.formulate_word_freq_list(Document(123, "this is a stupid doc with some stupid text and no meaning to text",
+                                                        "this is a stupid doc with some stupid text and no meaning to text"))
         count = len("this is a stupid doc with some stupid text and no meaning to text".split())
         assert self.freq_mat.freq_distribution["stupid"] == log(1 + 2/count)
         assert self.freq_mat.freq_distribution["meaning"] == log(1 + 1/count)
@@ -18,7 +19,8 @@ class WordFrequencyTest(unittest.TestCase):
 class DocFreqTest(unittest.TestCase):
 
     def setUp(self):
-        self.docs = [Document(123, "stupid doc stupid text no meaning text"), Document(124,"hello you ready text based fun finding meaning")]
+        self.docs = [Document(123, "stupid doc stupid text no meaning text", "stupid doc stupid text no meaning text"),
+                     Document(124,"hello you ready text based fun finding meaning", "hello you ready text based fun finding meaning")]
         self.corpus = Corpus(self.docs)
 
     def test_should_calculate_the_frequency_of_word_in_text_corpus(self):
@@ -28,7 +30,8 @@ class DocFreqTest(unittest.TestCase):
 class MatrixTest(unittest.TestCase):
 
     def setUp(self):
-        self.docs = [Document(123, "stupid doc stupid text no meaning text"), Document(124,"ready text meaning")]
+        self.docs = [Document(123, "stupid doc stupid text no meaning text", "stupid doc stupid text no meaning text"),
+                     Document(124,"ready text meaning", "ready text meaning")]
         self.corpus = Corpus(self.docs)
         self.mat = Matrix()
         self.doc_frequency_distribution = self.mat.create_tf_df_values(self.corpus)

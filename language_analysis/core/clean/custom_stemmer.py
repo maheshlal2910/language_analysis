@@ -31,7 +31,6 @@ if __name__ == '__main__':
                             output += p.stem(word)
                             word = ''
                         output += c.lower()
-                print(output)
                 outfile.write(output)
             infile.close()
     outfile.close()
