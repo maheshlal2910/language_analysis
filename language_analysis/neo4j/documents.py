@@ -1,3 +1,6 @@
+from uuid import uuid1
+
+
 class UnprocessedDocumentsRepository:
 
     def __init__(self, graph):
@@ -25,3 +28,23 @@ class WordRepository:
     def save_words(self, doc_frequencies):
         merge_cypher = "MERGE (w:Word{name:{word_name}}) ON CREATE SET w.doc_freq={df} ON MATCH SET w.doc_freq={df}"
         [self.g.cypher.execute(merge_cypher, {'word_name': word, 'df': doc_frequencies[word]}) for word in doc_frequencies.keys()]
+
+    def words_at_cluster_level(self, level):
+        self.g.cypher.execute("MATCH (c:Cluster{level:})")
+
+    def fetch_words(self, skip, limit):
+        return self.g.cypher.execute("MATCH (word:Word) RETURN word SKIP {s} LIMIT {l}", {"s": skip, "l": limit}).to_subgraph().nodes
+
+
+class Cluster_repository:
+
+    def __init__(self, graph):
+        self.g = graph
+
+    def assign_word_to_cluster(self, word, cluster_id):
+        self.g.cypher.execute("MATCH (c:Cluster{_id:{cluster_id}}), (w:Word{name:{word}}) CREATE (w)-[:BELONGS_TO]->(c)", {'word': word, 'cluster_id': cluster_id})
+
+    def create(self, level):
+        cluster_id = str(uuid1())
+        self.g.cypher.execute("CREATE (c:Cluster{_id:{cluster_id}, level:{level}})", {'level':level, 'cluster_id': cluster_id})
+        return cluster_id
